@@ -2,7 +2,10 @@ const sequelize = require("../config/database");
 const Author = require("./Author");
 const Post = require("./Post");
 
-// Sync tables
-sequelize.sync({ alter: true });
+// Ensure relationships get registered
+const initializeDatabase = async () => {
+    await sequelize.sync({ alter: true }); 
+    console.log("Database synced successfully.");
+};
 
-module.exports = { sequelize, Author, Post };
+module.exports = { initializeDatabase, Author, Post };

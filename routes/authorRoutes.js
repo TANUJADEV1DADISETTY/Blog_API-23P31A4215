@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const authorController = require("../controllers/authorController");
+const controller = require("../controllers/authorController");
 
-router.post("/", authorController.createAuthor);
-router.get("/", authorController.getAuthors);
-router.get("/:id", authorController.getAuthorById);
-router.put("/:id", authorController.updateAuthor);
-router.delete("/:id", authorController.deleteAuthor);
+// Author Routes
+router.post("/", controller.createAuthor);
+router.get("/", controller.getAuthors);
+router.get("/:id", controller.getAuthorById);
+router.put("/:id", controller.updateAuthor);
+router.delete("/:id", controller.deleteAuthor);
+
+// Nested route: get posts for author
+router.get("/:id/posts", controller.getAuthorPosts);
 
 module.exports = router;

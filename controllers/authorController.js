@@ -1,42 +1,59 @@
 const { Author, Post } = require("../models");
 
-// CREATE AUTHOR
+// Create Author
 exports.createAuthor = async (req, res) => {
-  try {
-    const author = await Author.create(req.body);
-    res.status(201).json(author);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+    try {
+        const { name, email } = req.body;
+        const author = await Author.create({ name, email });
+        res.status(201).json(author);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 };
 
-// GET ALL AUTHORS
+// Get all authors
 exports.getAuthors = async (req, res) => {
-  const authors = await Author.findAll();
-  res.json(authors);
+    const authors = await Author.findAll();
+    res.json(authors);
 };
 
-// GET ONE AUTHOR
+// Get author by ID
 exports.getAuthorById = async (req, res) => {
-  const author = await Author.findByPk(req.params.id);
-  if (!author) return res.status(404).json({ error: "Author not found" });
-  res.json(author);
+    const author = await Author.findByPk(req.params.id);
+    if (!author)
+        return res.status(404).json({ message: "Author not found" });
+
+    res.json(author);
 };
 
-// UPDATE AUTHOR
+// Update author
 exports.updateAuthor = async (req, res) => {
-  const author = await Author.findByPk(req.params.id);
-  if (!author) return res.status(404).json({ error: "Author not found" });
+    const author = await Author.findByPk(req.params.id);
+    if (!author)
+        return res.status(404).json({ message: "Author not found" });
 
-  await author.update(req.body);
-  res.json(author);
+    await author.update(req.body);
+    res.json(author);
 };
 
-// DELETE AUTHOR (CASCADE POSTS)
+// Delete author (Cascade deletes posts)
 exports.deleteAuthor = async (req, res) => {
-  const author = await Author.findByPk(req.params.id);
-  if (!author) return res.status(404).json({ error: "Author not found" });
+    const author = await Author.findByPk(req.params.id);
+    if (!author)
+        return res.status(404).json({ message: "Author not found" });
 
-  await author.destroy(); // cascade deletes posts
-  res.json({ message: "Author and related posts deleted" });
+    await author.destroy();
+    res.json({ message: "Author and related posts deleted" });
+};
+
+// Get all posts by author
+exports.getAuthorPosts = async (req, res) => {
+    const author = await Author.findByPk(req.params.id);
+
+    if (!author)
+        return res.status(404).json({ message: "Author not found" });
+
+    const posts = await Post.findAll({ where: { author_id: req.params.id } });
+
+    res.json(posts);
 };

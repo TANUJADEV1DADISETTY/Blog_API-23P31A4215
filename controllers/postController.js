@@ -1,60 +1,59 @@
-const { Author, Post } = require("../models");
+const { Post, Author } = require("../models");
 
-// CREATE POST
+// Create Post
 exports.createPost = async (req, res) => {
-  const { author_id } = req.body;
+    const { title, content, author_id } = req.body;
 
-  const author = await Author.findByPk(author_id);
-  if (!author) return res.status(400).json({ error: "Author does not exist" });
+    const author = await Author.findByPk(author_id);
+    if (!author)
+        return res.status(400).json({ message: "Author does not exist" });
 
-  const post = await Post.create(req.body);
-  res.status(201).json(post);
+    const post = await Post.create({ title, content, author_id });
+    res.status(201).json(post);
 };
 
-// GET ALL POSTS (with filtering + JOIN)
+// Get all posts (optional filter)
 exports.getPosts = async (req, res) => {
-  const filter = req.query.author_id
-    ? { where: { author_id: req.query.author_id }, include: Author }
-    : { include: Author };
+    const { author_id } = req.query;
 
-  const posts = await Post.findAll(filter);
-  res.json(posts);
+    const posts = await Post.findAll({
+        where: author_id ? { author_id } : {},
+        include: [{ model: Author, attributes: ["name", "email"] }]
+    });
+
+    res.json(posts);
 };
 
-// GET ONE POST (with author)
+// Get post by ID
 exports.getPostById = async (req, res) => {
-  const post = await Post.findByPk(req.params.id, {
-    include: Author,
-  });
+    const post = await Post.findByPk(req.params.id, {
+        include: [{ model: Author, attributes: ["name", "email"] }]
+    });
 
-  if (!post) return res.status(404).json({ error: "Post not found" });
+    if (!post)
+        return res.status(404).json({ message: "Post not found" });
 
-  res.json(post);
+    res.json(post);
 };
 
-// UPDATE POST
+// Update post
 exports.updatePost = async (req, res) => {
-  const post = await Post.findByPk(req.params.id);
-  if (!post) return res.status(404).json({ error: "Post not found" });
+    const post = await Post.findByPk(req.params.id);
 
-  await post.update(req.body);
-  res.json(post);
+    if (!post)
+        return res.status(404).json({ message: "Post not found" });
+
+    await post.update(req.body);
+    res.json(post);
 };
 
-// DELETE POST
+// Delete post
 exports.deletePost = async (req, res) => {
-  const post = await Post.findByPk(req.params.id);
-  if (!post) return res.status(404).json({ error: "Post not found" });
+    const post = await Post.findByPk(req.params.id);
 
-  await post.destroy();
-  res.json({ message: "Post deleted" });
-};
+    if (!post)
+        return res.status(404).json({ message: "Post not found" });
 
-// NESTED ROUTE: GET POSTS OF AUTHOR
-exports.getAuthorPosts = async (req, res) => {
-  const author = await Author.findByPk(req.params.id);
-  if (!author) return res.status(404).json({ error: "Author not found" });
-
-  const posts = await Post.findAll({ where: { author_id: req.params.id } });
-  res.json(posts);
+    await post.destroy();
+    res.json({ message: "Post deleted" });
 };
