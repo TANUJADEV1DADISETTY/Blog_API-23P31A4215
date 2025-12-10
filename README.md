@@ -51,19 +51,6 @@ Expected Output:
 Database synced successfully.
 Server running on port 3000
 
-## 📊 ERD (Entity Relationship Diagram)
-
-+-------------------------+ 1 : M +-------------------------+
-| Authors |---------------------------->| Posts |
-+-------------------------+ +-------------------------+
-| PK id (INTEGER) | | PK id (INTEGER) |
-| name (STRING) | | title (STRING) |
-| email (STRING) | (unique) | content (TEXT) |
-| createdAt (DATE) | | FK author_id (INTEGER) |
-| updatedAt (DATE) | | createdAt (DATE) |
-+-------------------------+ | updatedAt (DATE) |
-+-------------------------+
-
 # 📚 API Documentation
 
 This section describes all REST API endpoints for the Blog API, including Authors and Posts.
@@ -351,5 +338,108 @@ To ensure API testing works even after deleting records, examples include **two 
 {
 "message": "Post deleted"
 }
+
+---
+
+# 📸 API Testing Screenshots
+
+Below are the screenshots of all API endpoints tested using Thunder Client.  
+All images are stored in the `/screenshots/` folder.
+
+---
+
+## 🧑‍💼 AUTHOR ENDPOINTS
+
+### 1️⃣ Create Author — `POST /authors`
+
+![Create Author](./screenshots/create-author.png)
+
+---
+
+### 2️⃣ Get All Authors — `GET /authors`
+
+![Get All Authors](./screenshots/get-authors.png)
+
+---
+
+### 3️⃣ Get Author by ID — `GET /authors/{id}`
+
+![Get Author By ID](./screenshots/get-author-by-id.png)
+
+---
+
+### 4️⃣ Update Author — `PUT /authors/{id}`
+
+![Update Author](./screenshots/update-author.png)
+
+---
+
+### 5️⃣ Delete Author — `DELETE /authors/{id}`
+
+![Delete Author](./screenshots/delete-author.png)
+
+---
+
+### 6️⃣ Get All Posts of a Specific Author — `GET /authors/{id}/posts`
+
+![Get Author Posts](./screenshots/get-author-posts.png)
+
+---
+
+### 7️⃣ After Author Deletion (Cascade Check)
+
+![Authors After Deletion](./screenshots/authors-after-deletion.png)
+
+---
+
+## 📝 POST ENDPOINTS
+
+### 8️⃣ Create Post — `POST /posts`
+
+![Create Post](./screenshots/create-post.png)
+
+---
+
+### 9️⃣ Get All Posts — `GET /posts`
+
+![Get All Posts](./screenshots/get-posts.png)
+
+---
+
+### 🔟 Filter Posts by Author — `GET /posts?author_id={id}`
+
+![Filter Posts](./screenshots/filter-posts.png)
+
+---
+
+### 1️⃣1️⃣ Get Post by ID — `GET /posts/{id}`
+
+![Get Post By ID](./screenshots/get-post-by-id.png)
+
+---
+
+### 1️⃣2️⃣ Update Post — `PUT /posts/{id}`
+
+![Update Post](./screenshots/update-post.png)
+
+---
+
+### 1️⃣3️⃣ Delete Post — `DELETE /posts/{id}`
+
+![Delete Post](./screenshots/delete-post.png)
+
+---
+
+## ❌ Validation & Relationship Cases
+
+### 1️⃣4️⃣ Invalid Author While Creating Post
+
+![Invalid Author Error](./screenshots/invalid-author-post.png)
+
+---
+
+### 1️⃣5️⃣ Cascade Delete Verification
+
+![Cascade Delete Check](./screenshots/cascade-delete-check.png)
 
 ---
