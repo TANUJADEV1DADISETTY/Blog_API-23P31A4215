@@ -51,20 +51,18 @@ Expected Output:
 Database synced successfully.
 Server running on port 3000
 
-## 📊 Database Schema & ERD Diagram
+## 📊 ERD (Entity Relationship Diagram)
 
-ERD (Entity Relationship Diagram)
-
-+-------------------+ 1 : M +-------------------+
-| Authors |--------------------------| Posts |
-+-------------------+ +-------------------+
-| id (PK) | | id (PK) |
-| name | | title |
-| email (unique) | | content |
-| createdAt | | author_id (FK) |
-| updatedAt | | createdAt |
-+-------------------+ | updatedAt |
-+-------------------+
++-------------------------+ 1 : M +-------------------------+
+| Authors |---------------------------->| Posts |
++-------------------------+ +-------------------------+
+| PK id (INTEGER) | | PK id (INTEGER) |
+| name (STRING) | | title (STRING) |
+| email (STRING) | (unique) | content (TEXT) |
+| createdAt (DATE) | | FK author_id (INTEGER) |
+| updatedAt (DATE) | | createdAt (DATE) |
++-------------------------+ | updatedAt (DATE) |
++-------------------------+
 
 # 📚 API Documentation
 
